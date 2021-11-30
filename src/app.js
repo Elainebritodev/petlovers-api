@@ -1,14 +1,28 @@
 import express from 'express';
 
-import dotenv from 'dontenv';
+import dotenv from 'dotenv';
+
+import resquestTrackMiddleware from './middlewares/requestTrackin';
+import errorHandlingMiddleware from './middlewares/errorHandling';
+import resourceNotFoundMiddleware from './middlewares/resourceNotFound';
 
 dotenv.config();
 
 const app = express();
 
-console.log(process.env);
+app.use(resquestTrackMiddleware);
 
-app.get('/', (req, res) => res.json({ message: 'Hello Project API!' }));
+app.get('/', (req, res, next) => {
+  try {
+    vsdbsbbsbd
+    res.json({ message: 'Hello!!!!! Project API ok!!!' })
+  } catch (error) {
+    next(error);
+  }
+}); /* para lidar com erro usa-se sempre try { } catch {} */
 
-app.listen(process.env.PORTprocess.env.PORT, () => console.log(`App connected at PORT 5050 ${process.env.PORT}`));
+/* Criando dois middlewares */
+app.use(errorHandlingMiddleware); /* Middleware error hendling */ 
+app.use(resourceNotFoundMiddleware); /* Middleware de rota não encontrada */
 
+app.listen(process.env.PORT, () => console.log(`App connected at PORT ${process.env.PORT}`));
